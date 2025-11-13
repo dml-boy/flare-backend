@@ -26,32 +26,106 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-model About {
+model AboutIntro {
+  id         Int      @id @default(autoincrement())
+  subtitle   String
+  title      String
+  description String
+  photoUrl   String?
+  steps      AboutStep[]
+}
+
+model AboutStep {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  order       Int
+  aboutIntro  AboutIntro @relation(fields: [aboutIntroId], references: [id])
+  aboutIntroId Int
 }
+
+
+// prisma/schema.prisma
 
 model Service {
   id          Int      @id @default(autoincrement())
   title       String
   description String
-  icon        String?
-  order       Int      @default(0)
+  iconClass   String
+  order       Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@unique([order])
+  @@index([order])
+}
+// prisma/schema.prisma
+model Portfolio {
+  id          Int      @id @default(autoincrement())
+  title       String
+  category    String   // e.g., "Branding", "Frontend Design"
+  thumbUrl    String   // small image
+  thumb2xUrl  String?  // optional 2x
+  fullUrl     String   // large image for lightbox
+  fullSize    String   // e.g., "1050x700"
+  projectUrl  String?  // external link
+  description String
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([order])
+  @@index([order])
+}
+
+// prisma/schema.prisma
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  name      String
+  logoUrl   String
+  linkUrl   String?
+  order     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([order])
+  @@index([order])
 }
 
 model Testimonial {
+  id          Int      @id @default(autoincrement())
+  content     String
+  authorName  String
+  authorTitle String
+  authorImage String
+  order       Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([order])
+  @@index([order])
+}
+
+// prisma/schema.prisma
+
+model ContactInfo {
   id        Int      @id @default(autoincrement())
-  name      String
-  role      String?
-  message   String
-  image     String?
-  featured  Boolean  @default(false)
+  email     String
+  phone     String
+  address   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model SocialLink {
+  id        Int      @id @default(autoincrement())
+  platform  String   // e.g., "Facebook", "Twitter"
+  url       String
+  order     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([order])
+  @@index([order])
 }
