@@ -16,7 +16,7 @@ export class TestimonialsService {
     return this.prisma.testimonial.findMany({ orderBy: { order: 'asc' } });
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const testimonial = await this.prisma.testimonial.findUnique({ where: { id } });
     if (!testimonial) throw new NotFoundException(`Testimonial ${id} not found`);
     return testimonial;
@@ -28,7 +28,7 @@ export class TestimonialsService {
     return this.prisma.testimonial.create({ data: dto });
   }
 
-  async update(id: number, dto: UpdateTestimonialDto) {
+  async update(id: string, dto: UpdateTestimonialDto) {
     const testimonial = await this.prisma.testimonial.findUnique({ where: { id } });
     if (!testimonial) throw new NotFoundException(`Testimonial ${id} not found`);
 
@@ -40,7 +40,7 @@ export class TestimonialsService {
     return this.prisma.testimonial.update({ where: { id }, data: dto });
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const testimonial = await this.prisma.testimonial.findUnique({ where: { id } });
     if (!testimonial) throw new NotFoundException(`Testimonial ${id} not found`);
 
@@ -61,7 +61,7 @@ export class TestimonialsService {
     return { message: 'Deleted and reordered' };
   }
 
-  async reorder(orderMap: { id: number; order: number }[]) {
+  async reorder(orderMap: { id: string; order: number }[]) {
     const current = await this.findAll();
     const currentIds = current.map(t => t.id);
     const newIds = orderMap.map(o => o.id);

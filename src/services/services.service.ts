@@ -30,7 +30,7 @@ export class ServicesService {
   }
 
   // UPDATE service (admin)
-  async update(id: number, dto: UpdateServiceDto) {
+  async update(id: string, dto: UpdateServiceDto) {
     const service = await this.prisma.service.findUnique({ where: { id } });
     if (!service) throw new NotFoundException(`Service with id ${id} not found`);
 
@@ -50,7 +50,7 @@ export class ServicesService {
   }
 
   // DELETE service (admin)
-  async delete(id: number) {
+  async delete(id: string) {
     const service = await this.prisma.service.findUnique({ where: { id } });
     if (!service) throw new NotFoundException(`Service with id ${id} not found`);
 
@@ -74,7 +74,7 @@ export class ServicesService {
   }
 
   // REORDER services (drag & drop)
-  async reorder(orderMap: { id: number; order: number }[]) {
+  async reorder(orderMap: { id: string; order: number }[]) {
     const current = await this.getAll();
     const currentIds = current.map(s => s.id);
     const newIds = orderMap.map(o => o.id);

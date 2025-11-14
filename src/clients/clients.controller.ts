@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   UseGuards,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -26,7 +25,7 @@ export class ClientController {
 
   // Public — Get a single client by ID
   @Get(':id')
-  async getOne(@Param('id', ParseIntPipe) id: number) {
+  async getOne(@Param('id') id: string) {  // <-- use string
     return this.client.getOne(id);
   }
 
@@ -40,7 +39,7 @@ export class ClientController {
   // Protected — Update an existing client
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() body: UpdateClientDto) {
+  async update(@Param('id') id: string, @Body() body: UpdateClientDto) { // <-- use string
     return this.client.update(id, body);
   }
 }

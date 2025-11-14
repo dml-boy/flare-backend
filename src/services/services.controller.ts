@@ -34,19 +34,19 @@ export class ServicesController {
 
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateServiceDto) {
+  update(@Param('id', ParseIntPipe) id: string, @Body() dto: UpdateServiceDto) {
     return this.services.update(id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id', ParseIntPipe) id: string) {
     return this.services.delete(id);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('reorder')
-  reorder(@Body() orderMap: { id: number; order: number }[]) {
+  reorder(@Body() orderMap: { id: string; order: number }[]) {
     return this.services.reorder(orderMap);
   }
 }

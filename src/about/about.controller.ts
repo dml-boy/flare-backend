@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   UseGuards,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { AboutService } from './about.service';
 import { UpdateAboutDto } from './dto/update-about.dto';
@@ -19,37 +18,33 @@ import { AuthGuard } from '@nestjs/passport';
 export class AboutController {
   constructor(private readonly about: AboutService) {}
 
-  // Public — anyone can view
   @Get()
   async getAll() {
     return this.about.getAbout();
   }
 
-  // Protected — update main about section
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   async updateAbout(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,   // 👈 MongoDB IDs are strings
     @Body() body: UpdateAboutDto,
   ) {
     return this.about.updateAbout(id, body);
   }
 
-  // Protected — create step
   @UseGuards(AuthGuard('jwt'))
   @Post(':aboutId/steps')
   async createStep(
-    @Param('aboutId', ParseIntPipe) aboutId: number,
+    @Param('aboutId') aboutId: string,  // 👈 string ID
     @Body() body: CreateStepDto,
   ) {
     return this.about.createStep(aboutId, body);
   }
 
-  // Protected — update step
   @UseGuards(AuthGuard('jwt'))
   @Patch('steps/:id')
   async updateStep(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,  // 👈 string ID
     @Body() body: UpdateStepDto,
   ) {
     return this.about.updateStep(id, body);

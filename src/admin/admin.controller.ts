@@ -19,6 +19,6 @@ export class AdminController {
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    return this.admin.removeAdmin(+id);
+    return this.admin.removeAdmin(id);   // 👈 no +id, MongoDB uses string ID
   }
 }

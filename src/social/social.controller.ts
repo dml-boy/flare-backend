@@ -32,19 +32,19 @@ export class SocialController {
 
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateSocialDto) {
+  update(@Param('id', ParseIntPipe) id: string, @Body() dto: UpdateSocialDto) {
     return this.service.update(id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id', ParseIntPipe) id: string) {
     return this.service.delete(id);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('reorder')
-  reorder(@Body() orderMap: { id: number; order: number }[]) {
+  reorder(@Body() orderMap: { id: string; order: number }[]) {
     return this.service.reorder(orderMap);
   }
 }

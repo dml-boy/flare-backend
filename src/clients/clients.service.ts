@@ -14,7 +14,7 @@ export class ClientsService {
     });
   }
 
-  getOne(id: number) {
+  getOne(id: string) {
     return this.prisma.client.findUnique({
       where: { id },
     });
@@ -24,7 +24,7 @@ export class ClientsService {
     return this.prisma.client.create({ data });
   }
 
-  update(id: number, data: UpdateClientDto) {
+  update(id: string, data: UpdateClientDto) {
     return this.prisma.client.update({
       where: { id },
       data,

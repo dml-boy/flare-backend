@@ -22,7 +22,7 @@ export class SocialService {
     return this.prisma.socialLink.create({ data: dto });
   }
 
-  async update(id: number, dto: UpdateSocialDto) {
+  async update(id: string, dto: UpdateSocialDto) {
     const link = await this.prisma.socialLink.findUnique({ where: { id } });
     if (!link) throw new NotFoundException(`Social link ${id} not found`);
 
@@ -34,7 +34,7 @@ export class SocialService {
     return this.prisma.socialLink.update({ where: { id }, data: dto });
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const link = await this.prisma.socialLink.findUnique({ where: { id } });
     if (!link) throw new NotFoundException(`Social link ${id} not found`);
 
@@ -54,7 +54,7 @@ export class SocialService {
     return { message: 'Deleted and reordered' };
   }
 
-  async reorder(orderMap: { id: number; order: number }[]) {
+  async reorder(orderMap: { id: string; order: number }[]) {
     const current = await this.getAll();
     const currentIds = current.map(l => l.id);
     const newIds = orderMap.map(o => o.id);

@@ -31,7 +31,8 @@ async function bootstrap() {
   await prismaService.enableShutdownHooks(app);
 
   const port =  4000;
-  await app.listen(port);
+  await app.listen(4000);
   console.log(` Server running on http://localhost:${port}`);
 }
 bootstrap();
+  

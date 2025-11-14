@@ -29,7 +29,7 @@ async function main() {
   console.log('🌱 Seeding About section...');
   const existingAbout = await prisma.aboutIntro.findFirst();
   if (!existingAbout) {
-    await prisma.aboutIntro.create({
+    const about = await prisma.aboutIntro.create({
       data: {
         subtitle: 'Who We Are',
         title:
@@ -37,36 +37,42 @@ async function main() {
         description:
           'At Flare we ignite digital transformation through intelligent technology solutions and strategic IT consulting. We help businesses from startups to enterprises simplify complexity, modernize their systems, and scale with confidence in the digital age.',
         photoUrl: 'https://example.com/flare-about-photo.jpg',
-        steps: {
-          create: [
-            {
-              title: 'Define',
-              description:
-                'We start by understanding you—your business goals, audience, and the challenges holding you back. Through strategy sessions, research, and technical consultation, we define what your users need, what your systems require, and how technology can best serve your vision.',
-              order: 1,
-            },
-            {
-              title: 'Design',
-              description:
-                'Once we have clarity, our creative and technical teams bring your ideas to life visually. We focus on clean, modern, and user-friendly interfaces that reflect your brand identity and drive real engagement.',
-              order: 2,
-            },
-            {
-              title: 'Build',
-              description:
-                "We don't just build — we engineer possibility. Every design, every line of code, and every feature is built with intention — optimized for speed, usability, and scalability.",
-              order: 3,
-            },
-            {
-              title: 'Launch',
-              description:
-                'Where vision takes flight. The moment your product goes live, it’s your beginning. Our launch process ensures everything runs seamlessly: fast deployment, flawless function, and a strategy that gets you noticed.',
-              order: 4,
-            },
-          ],
-        },
       },
     });
+
+    await prisma.aboutStep.createMany({
+      data: [
+        {
+          title: 'Define',
+          description:
+            'We start by understanding you—your business goals, audience, and the challenges holding you back. Through strategy sessions, research, and technical consultation, we define what your users need, what your systems require, and how technology can best serve your vision.',
+          order: 1,
+          aboutIntroId: about.id,
+        },
+        {
+          title: 'Design',
+          description:
+            'Once we have clarity, our creative and technical teams bring your ideas to life visually. We focus on clean, modern, and user-friendly interfaces that reflect your brand identity and drive real engagement.',
+          order: 2,
+          aboutIntroId: about.id,
+        },
+        {
+          title: 'Build',
+          description:
+            "We don't just build — we engineer possibility. Every design, every line of code, and every feature is built with intention — optimized for speed, usability, and scalability.",
+          order: 3,
+          aboutIntroId: about.id,
+        },
+        {
+          title: 'Launch',
+          description:
+            'Where vision takes flight. The moment your product goes live, it’s your beginning. Our launch process ensures everything runs seamlessly: fast deployment, flawless function, and a strategy that gets you noticed.',
+          order: 4,
+          aboutIntroId: about.id,
+        },
+      ],
+    });
+
     console.log('✅ About section created successfully!');
   } else {
     console.log('⚠️ About section already exists, skipping.');
@@ -265,17 +271,28 @@ async function main() {
   }
 
   // === CONTACT INFO ===
-  console.log('🌱 Seeding Contact Info...');
-  await prisma.contactInfo.upsert({
-    where: { id: 1 },
-    update: {},
-    create: {
-      email: 'bitflow.com@gmail.com',
+  // === CONTACT INFO ===
+// === CONTACT INFO ===
+console.log('🌱 Seeding Contact Info...');
+
+const emailComp = 'bitflow.com@gmail.com';
+const existingContact = await prisma.contactInfo.findUnique({ 
+  where: { id: '64f1c3d8e4b0a1f2c3d4e5f6' } // or fetch first document
+});
+
+if (!existingContact) {
+  await prisma.contactInfo.create({
+    data: {
+      email: emailComp,
       phone: '+234-916-036-4498',
       address: '1600 Amphitheatre Parkway\nMile 3, PH RIVERS\nNIGERIA',
     },
   });
-  console.log('✅ Contact Info seeded!');
+  console.log('✅ Contact Info created!');
+} else {
+  console.log('⚠️ Contact Info already exists, skipping.');
+}
+
 
   // === SOCIAL LINKS ===
   console.log('🌱 Seeding Social Links...');

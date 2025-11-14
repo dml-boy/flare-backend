@@ -18,12 +18,13 @@ export class AboutService {
     const about = await this.prisma.aboutIntro.findFirst({
       include: { steps: { orderBy: { order: 'asc' } } },
     });
+
     if (!about) throw new NotFoundException('About section not found');
     return about;
   }
 
   // PATCH /about/:id
-  async updateAbout(id: number, dto: UpdateAboutDto) {
+  async updateAbout(id: string, dto: UpdateAboutDto) {
     const exists = await this.prisma.aboutIntro.findUnique({ where: { id } });
     if (!exists) throw new NotFoundException(`About with id ${id} not found`);
 
@@ -35,14 +36,16 @@ export class AboutService {
   }
 
   // POST /about/:aboutId/steps
-  async createStep(aboutId: number, dto: CreateStepDto) {
+  async createStep(aboutId: string, dto: CreateStepDto) {
     const about = await this.prisma.aboutIntro.findUnique({ where: { id: aboutId } });
     if (!about) throw new NotFoundException(`About with id ${aboutId} not found`);
 
     const orderExists = await this.prisma.aboutStep.findFirst({
       where: { aboutIntroId: aboutId, order: dto.order },
     });
-    if (orderExists) throw new BadRequestException(`Order ${dto.order} already taken`);
+
+    if (orderExists)
+      throw new BadRequestException(`Order ${dto.order} already taken`);
 
     return this.prisma.aboutStep.create({
       data: { ...dto, aboutIntroId: aboutId },
@@ -50,11 +53,12 @@ export class AboutService {
   }
 
   // PATCH /about/steps/:id
-  async updateStep(id: number, dto: UpdateStepDto) {
+  async updateStep(id: string, dto: UpdateStepDto) {
     const step = await this.prisma.aboutStep.findUnique({ where: { id } });
+
     if (!step) throw new NotFoundException(`Step with id ${id} not found`);
 
-    // If order changes, ensure uniqueness
+    // Check for order conflicts
     if (dto.order !== undefined && dto.order !== step.order) {
       const orderTaken = await this.prisma.aboutStep.findFirst({
         where: {
@@ -63,7 +67,9 @@ export class AboutService {
           id: { not: id },
         },
       });
-      if (orderTaken) throw new BadRequestException(`Order ${dto.order} already taken`);
+
+      if (orderTaken)
+        throw new BadRequestException(`Order ${dto.order} already taken`);
     }
 
     return this.prisma.aboutStep.update({

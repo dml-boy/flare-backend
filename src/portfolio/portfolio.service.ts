@@ -27,7 +27,7 @@ export class PortfolioService {
     return this.prisma.portfolio.create({ data: dto });
   }
 
-  async update(id: number, dto: UpdatePortfolioDto) {
+  async update(id: string, dto: UpdatePortfolioDto) {
     const item = await this.prisma.portfolio.findUnique({ where: { id } });
     if (!item) throw new NotFoundException(`Item ${id} not found`);
 
@@ -41,7 +41,7 @@ export class PortfolioService {
     return this.prisma.portfolio.update({ where: { id }, data: dto });
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     const item = await this.prisma.portfolio.findUnique({ where: { id } });
     if (!item) throw new NotFoundException(`Item ${id} not found`);
 
@@ -62,7 +62,7 @@ export class PortfolioService {
     return { message: 'Deleted and reordered' };
   }
 
-  async reorder(orderMap: { id: number; order: number }[]) {
+  async reorder(orderMap: { id: string; order: number }[]) {
     const current = await this.getAll();
     const currentIds = current.map(i => i.id);
     const newIds = orderMap.map(o => o.id);
