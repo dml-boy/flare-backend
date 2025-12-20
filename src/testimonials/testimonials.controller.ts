@@ -8,7 +8,6 @@ import {
   Param,
   Body,
   UseGuards,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { TestimonialsService } from './testimonials.service';
 import { CreateTestimonialDto } from './dto/create-testimonial.dto';
@@ -31,19 +30,22 @@ export class TestimonialsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: string) {
+  findOne(@Param('id') id: string) {
     return this.service.findOne(id);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: string, @Body() dto: UpdateTestimonialDto) {
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateTestimonialDto,
+  ) {
     return this.service.update(id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: string) {
+  delete(@Param('id') id: string) {
     return this.service.remove(id);
   }
 
@@ -53,3 +55,4 @@ export class TestimonialsController {
     return this.service.reorder(orderMap);
   }
 }
+ 
