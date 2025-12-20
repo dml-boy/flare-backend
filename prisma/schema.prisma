@@ -10,7 +10,7 @@ datasource db {
 
 enum Role {
   ADMIN
-}
+}  
 
 model User {
   id        String   @id @map("_id") @default(auto()) @db.ObjectId

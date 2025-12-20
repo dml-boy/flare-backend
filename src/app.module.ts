@@ -13,10 +13,10 @@ import { ServicesModule } from './services/services.module';
 import { PortfolioModule } from './portfolio/portfolio.module';
 import { ContactModule } from './contact/contact.module';
 import { SocialModule } from './social/social.module';
-import { ClientsModule } from './clients/clients.module';
-
+import { ClientsModule } from './clients/clients.module'; 
+ 
 const ENABLED = (process.env.ENABLED_MODULES || '').split(',').map(s => s.trim()).filter(Boolean);
-
+  
 // helper to check if module name is enabled
 function isEnabled(name: string) {
   if (!ENABLED.length) return true; // if none specified, enable all (default)
