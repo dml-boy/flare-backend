@@ -8,7 +8,6 @@ import {
   Param,
   Body,
   UseGuards,
-  ParseIntPipe,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto } from './dto/create-service.dto';
@@ -34,13 +33,16 @@ export class ServicesController {
 
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: string, @Body() dto: UpdateServiceDto) {
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdateServiceDto,
+  ) {
     return this.services.update(id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: string) {
+  delete(@Param('id') id: string) {
     return this.services.delete(id);
   }
 
