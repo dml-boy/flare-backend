@@ -32,13 +32,13 @@ export class PortfolioController {
 
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: string, @Body() dto: UpdatePortfolioDto) {
+  update(@Param('id') id: string, @Body() dto: UpdatePortfolioDto) {
     return this.portfolio.update(id, dto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: string) {
+  delete(@Param('id') id: string) {
     return this.portfolio.delete(id);
   }
 
