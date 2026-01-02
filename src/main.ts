@@ -29,7 +29,11 @@ async function bootstrap() {
   });
 
   // Serve static assets
-  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.useStaticAssets(join(__dirname, '..', 'public'), {
+    prefix: '/public/', // optional: to access files like /public/uploads/file.jpg
+    maxAge: '1d', // Cache static assets for 1 day
+    index: false, // directory listing off
+  });
 
   // Prisma shutdown hooks (so Prisma disconnects gracefully)
   const prismaService = app.get(PrismaService);

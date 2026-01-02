@@ -14,6 +14,7 @@ import { PortfolioModule } from './portfolio/portfolio.module';
 import { ContactModule } from './contact/contact.module';
 import { SocialModule } from './social/social.module';
 import { ClientsModule } from './clients/clients.module'; 
+import { UploadModule } from './upload/upload.module'; 
  
 const ENABLED = (process.env.ENABLED_MODULES || '').split(',').map(s => s.trim()).filter(Boolean);
   
@@ -36,6 +37,7 @@ const imports = [
   ...(isEnabled('Contact') ? [ContactModule] : []),
   ...(isEnabled('Social') ? [SocialModule] : []),
   ...(isEnabled('Clients') ? [ClientsModule] : []),
+  UploadModule,
 ];
 
 @Module({ imports })
